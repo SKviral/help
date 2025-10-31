@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>সহায়তা | Help</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Noto Sans Bengali', sans-serif;
+      background: radial-gradient(circle at center, #0f0f0f, #000);
+      color: white;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      animation: fadeIn 1.2s ease-in-out;
+    }
+
+    .help-container {
+      background: linear-gradient(145deg, #1c1c1c, #111);
+      border-radius: 20px;
+      padding: 40px 30px;
+      box-shadow: 0 0 25px rgba(255, 0, 128, 0.5),
+                  inset 0 0 10px rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      max-width: 600px;
+      width: 90%;
+      text-align: center;
+      animation: glowPulse 3s infinite alternate ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes glowPulse {
+      0% { box-shadow: 0 0 20px rgba(255, 0, 128, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1); }
+      50% { box-shadow: 0 0 35px rgba(255, 50, 180, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.15); }
+      100% { box-shadow: 0 0 20px rgba(255, 0, 128, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1); }
+    }
+
+    h1 {
+      color: #ff66cc;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      text-shadow: 0 0 15px rgba(255, 0, 128, 0.6);
+    }
+
+    p {
+      font-size: 1.3rem;
+      color: #f1f1f1;
+      line-height: 2rem;
+      font-weight: 500;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="help-container">
+    <h1>📢 সহায়তা নির্দেশিকা</h1>
+    <p>ভিডিও মধ্যে ক্লিক করার পরে<br>অন্য কোন জায়গায় নিয়ে গেলে<br><strong>ব্যাকে চলে আসবেন</strong>।</p>
+  </div>
+</body>
+</html>
