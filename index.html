@@ -4,11 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Help | সহায়তা</title>
+
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@500;700&family=Roboto:wght@500&display=swap" rel="stylesheet">
+
   <style>
     body {
-      font-family: 'Noto Sans Bengali', sans-serif;
       background: radial-gradient(circle at center, #0f0f0f, #000);
       color: white;
       height: 100vh;
@@ -18,31 +22,42 @@
       justify-content: center;
       animation: fadeIn 1.2s ease-in-out;
     }
+
     .help-box {
       background: linear-gradient(145deg, #1c1c1c, #111);
-      border-radius: 20px;
-      padding: 40px 30px;
-      max-width: 600px;
+      border-radius: 22px;
+      padding: 45px 35px;
+      max-width: 650px;
       width: 90%;
       text-align: center;
-      box-shadow: 0 0 30px rgba(255, 0, 128, 0.6);
-      animation: glow 3s infinite alternate;
+      box-shadow: 0 0 35px rgba(255, 0, 128, 0.6),
+                  inset 0 0 15px rgba(255, 255, 255, 0.05);
+      animation: glowPulse 4s infinite alternate ease-in-out;
     }
+
     h1 {
-      color: #ff66cc;
-      font-size: 1.8rem;
-      font-weight: 700;
+      font-size: 1.9rem;
       margin-bottom: 20px;
-      text-shadow: 0 0 15px rgba(255, 0, 128, 0.5);
+      font-weight: 700;
+      text-shadow: 0 0 15px rgba(255, 0, 128, 0.6);
     }
+
     p {
       font-size: 1.3rem;
-      color: #f1f1f1;
-      line-height: 2.1rem;
+      line-height: 2.2rem;
+      font-weight: 500;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
     }
-    @keyframes glow {
-      0% { box-shadow: 0 0 20px rgba(255, 0, 128, 0.6); }
-      100% { box-shadow: 0 0 35px rgba(255, 80, 180, 0.8); }
+
+    @keyframes glowPulse {
+      0% { box-shadow: 0 0 25px rgba(255, 0, 128, 0.5); }
+      50% { box-shadow: 0 0 40px rgba(255, 50, 180, 0.8); }
+      100% { box-shadow: 0 0 25px rgba(255, 0, 128, 0.5); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
     }
   </style>
 </head>
@@ -53,13 +68,19 @@
   </div>
 
   <script>
-    // Check user's language or region
-    const userLang = navigator.language || navigator.userLanguage;
+    // detect user language
+    const lang = navigator.language || navigator.userLanguage;
+    const isBangla = lang.startsWith("bn");
 
-    if (!userLang.startsWith('bn')) {
-      document.getElementById("title").innerText = "📢 Help Guide";
-      document.getElementById("text").innerText = 
-        "If clicking inside the video redirects you elsewhere, simply come back to this page.";
+    const title = document.getElementById("title");
+    const text = document.getElementById("text");
+
+    if (!isBangla) {
+      document.body.style.fontFamily = "'Roboto', sans-serif";
+      title.innerText = "📢 Help Guide";
+      text.innerText = "If clicking inside the video takes you to another page, simply come back here.";
+    } else {
+      document.body.style.fontFamily = "'Noto Sans Bengali', sans-serif";
     }
   </script>
 </body>
