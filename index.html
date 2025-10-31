@@ -1,112 +1,151 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Language Switch Demo</title>
-  <style>
-    body {
-      font-family: "Noto Sans Bengali", sans-serif;
-      background-color: #f0f8ff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      transition: background-color 0.5s ease;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Help Box with Language Toggle</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body {
+    font-family: 'Noto Sans Bengali', sans-serif;
+    background: radial-gradient(circle at center, #0a0a0a, #000);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+  }
 
-    #language-toggle {
-      position: absolute;
-      top: 40px;
-      background-color: #0078ff;
-      color: white;
-      border: none;
-      padding: 10px 22px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.3s ease;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-    }
+  .help-box {
+    position: relative;
+    background: rgba(20, 20, 20, 0.85);
+    border-radius: 20px;
+    padding: 60px 30px 40px;
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 0 35px rgba(255, 0, 128, 0.4);
+    backdrop-filter: blur(10px);
+    animation: float 4s ease-in-out infinite;
+  }
 
-    #language-toggle:hover {
-      background-color: #005fcc;
-      transform: scale(1.05);
-    }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+  }
 
-    .text-box {
-      max-width: 80%;
-      text-align: center;
-      font-size: 22px;
-      line-height: 1.8;
-      background: #ffffff;
-      padding: 25px 35px;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-      opacity: 1;
-      transition: opacity 0.5s ease;
-    }
+  .glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,0,128,0.2), transparent 60%);
+    animation: rotate 10s linear infinite;
+    z-index: 0;
+  }
 
-    .fade {
-      opacity: 0;
-    }
+  @keyframes rotate { from {transform: rotate(0deg);} to {transform: rotate(360deg);} }
 
-    .globe {
-      font-size: 18px;
-    }
-  </style>
+  .content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .lang-btn {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    font-size: 14px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    z-index: 3;
+  }
+
+  .lang-btn:hover {
+    background: rgba(255,0,128,0.4);
+    box-shadow: 0 0 10px rgba(255,0,128,0.7);
+  }
+
+  #message {
+    display: inline-block;
+    border-right: 2px solid rgba(255,255,255,0.7);
+    white-space: pre-line;
+    overflow: hidden;
+    font-size: 18px;
+    line-height: 1.8;
+  }
+</style>
 </head>
 <body>
 
-  <button id="language-toggle">
-    <span class="globe">🌐</span>
-    বাংলা ভাষা
+<div class="help-box">
+  <div class="glow"></div>
+  <button id="langToggle" class="lang-btn">
+    <span>🌐</span> বাংলা ভাষা
   </button>
-
-  <div id="content" class="text-box">
-    ভিডিও মধ্যে ক্লিক করার পরে অন্য কোন জায়গায় নিয়ে গেলে ব্যাকে চলে আসবেন।
+  <div class="content">
+    <h2 id="title" class="text-pink-500 text-xl font-semibold mb-3">ℹ️ সহায়তা বার্তা</h2>
+    <p id="message"></p>
   </div>
+</div>
 
-  <script>
-    const content = document.getElementById("content");
-    const toggleButton = document.getElementById("language-toggle");
+<script>
+const messages = {
+  bn: {
+    title: "ℹ️ সহায়তা বার্তা",
+    message: "ভিডিও মধ্যে ক্লিক করার পরে অন্য কোন জায়গায় নিয়ে গেলে ব্যাকে চলে আসবেন।",
+    btn: "English"
+  },
+  en: {
+    title: "ℹ️ Help Message",
+    message: "After clicking inside the video, if it takes you somewhere else, please return back.",
+    btn: "বাংলা ভাষা"
+  }
+};
 
-    const texts = {
-      bn: "ভিডিও মধ্যে ক্লিক করার পরে অন্য কোন জায়গায় নিয়ে গেলে ব্যাকে চলে আসবেন।",
-      en: "After clicking inside the video, if it takes you somewhere else, please return back."
-    };
+let currentLang = navigator.language.startsWith("bn") ? "bn" : "en";
 
-    let currentLang = (navigator.language.startsWith("bn")) ? "bn" : "en";
+const titleEl = document.getElementById("title");
+const msgEl = document.getElementById("message");
+const btnEl = document.getElementById("langToggle");
 
-    function updateLanguage(lang) {
-      content.classList.add("fade");
-      setTimeout(() => {
-        content.textContent = texts[lang];
-        content.classList.remove("fade");
-      }, 400);
+function typeText(text) {
+  msgEl.textContent = "";
+  let index = 0;
+  const interval = setInterval(() => {
+    msgEl.textContent = text.slice(0, index);
+    index++;
+    if(index > text.length) clearInterval(interval);
+  }, 40);
+}
 
-      if (lang === "bn") {
-        toggleButton.innerHTML = '<span class="globe">🌐</span> English';
-        document.documentElement.lang = "bn";
-      } else {
-        toggleButton.innerHTML = '<span class="globe">🌐</span> বাংলা ভাষা';
-        document.documentElement.lang = "en";
-      }
-    }
+function setLanguage(lang){
+  const data = messages[lang];
+  titleEl.innerText = data.title;
+  btnEl.innerHTML = `<span>🌐</span> ${data.btn}`;
+  currentLang = lang;
+  typeText(data.message);
+}
 
-    toggleButton.addEventListener("click", () => {
-      currentLang = (currentLang === "bn") ? "en" : "bn";
-      updateLanguage(currentLang);
-    });
+btnEl.addEventListener("click", () => {
+  const newLang = currentLang === "bn" ? "en" : "bn";
+  setLanguage(newLang);
+});
 
-    updateLanguage(currentLang);
-  </script>
+setLanguage(currentLang);
+</script>
 
 </body>
 </html>
