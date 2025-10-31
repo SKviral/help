@@ -86,19 +86,29 @@
     h2 {
       margin-top: 25px;
     }
+
+    /* Typing effect styles */
+    #message {
+      display: inline-block;
+      border-right: 2px solid rgba(255, 255, 255, 0.7);
+      white-space: pre-line;
+      overflow: hidden;
+    }
+
+    @keyframes blinkCursor {
+      50% { border-color: transparent; }
+    }
   </style>
 </head>
 <body>
   <div class="help-box">
     <div class="glow"></div>
 
-    <button id="langToggle" class="lang-btn">EN</button>
+    <button id="langToggle" class="lang-btn">English language</button>
 
     <div class="content">
       <h2 id="title" class="text-pink-500 text-xl font-semibold mb-3">ℹ️ সহায়তা বার্তা</h2>
-      <p id="message" class="text-gray-200 leading-relaxed text-lg">
-        ভিডিও মধ্যে ক্লিক করার পরে অন্য কোন জায়গায় নিয়ে গেলে ব্যাকে চলে আসবেন।
-      </p>
+      <p id="message" class="text-gray-200 leading-relaxed text-lg"></p>
     </div>
   </div>
 
@@ -107,12 +117,12 @@
       bn: {
         title: "ℹ️ সহায়তা বার্তা",
         message: "ভিডিও মধ্যে ক্লিক করার পরে অন্য কোন জায়গায় নিয়ে গেলে ব্যাকে চলে আসবেন।",
-        btn: "EN"
+        btn: "English language"
       },
       en: {
         title: "ℹ️ Help Message",
         message: "If clicking inside the video takes you somewhere else, just come back here.",
-        btn: "BN"
+        btn: "বাংলা ভাষা"
       }
     };
 
@@ -127,12 +137,22 @@
     const msgEl = document.getElementById("message");
     const btnEl = document.getElementById("langToggle");
 
+    function typeText(text) {
+      msgEl.innerHTML = "";
+      let index = 0;
+      const interval = setInterval(() => {
+        msgEl.textContent = text.slice(0, index);
+        index++;
+        if (index > text.length) clearInterval(interval);
+      }, 60); // টাইপ স্পিড (মিলিসেকেন্ডে)
+    }
+
     function setLanguage(lang) {
       const data = messages[lang];
       titleEl.innerText = data.title;
-      msgEl.innerText = data.message;
       btnEl.innerText = data.btn;
       currentLang = lang;
+      typeText(data.message);
     }
 
     btnEl.addEventListener("click", () => {
