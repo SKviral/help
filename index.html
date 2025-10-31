@@ -3,85 +3,111 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Help | সহায়তা</title>
+  <title>সহায়তা | Help</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@500;700&family=Roboto:wght@500&display=swap" rel="stylesheet">
-
   <style>
     body {
-      background: radial-gradient(circle at center, #0f0f0f, #000);
+      font-family: 'Noto Sans Bengali', sans-serif;
+      background: radial-gradient(circle at top, #0a0a0a, #000);
       color: white;
-      height: 100vh;
-      margin: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      animation: fadeIn 1.2s ease-in-out;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
     }
 
     .help-box {
-      background: linear-gradient(145deg, #1c1c1c, #111);
-      border-radius: 22px;
-      padding: 45px 35px;
-      max-width: 650px;
-      width: 90%;
+      background: rgba(20, 20, 20, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      padding: 35px;
       text-align: center;
-      box-shadow: 0 0 35px rgba(255, 0, 128, 0.6),
-                  inset 0 0 15px rgba(255, 255, 255, 0.05);
-      animation: glowPulse 4s infinite alternate ease-in-out;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 0 25px rgba(255, 0, 128, 0.3);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease-in-out;
     }
 
-    h1 {
-      font-size: 1.9rem;
-      margin-bottom: 20px;
-      font-weight: 700;
-      text-shadow: 0 0 15px rgba(255, 0, 128, 0.6);
+    .help-box:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 40px rgba(255, 0, 128, 0.5);
     }
 
-    p {
-      font-size: 1.3rem;
-      line-height: 2.2rem;
-      font-weight: 500;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    .lang-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 14px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
 
-    @keyframes glowPulse {
-      0% { box-shadow: 0 0 25px rgba(255, 0, 128, 0.5); }
-      50% { box-shadow: 0 0 40px rgba(255, 50, 180, 0.8); }
-      100% { box-shadow: 0 0 25px rgba(255, 0, 128, 0.5); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
+    .lang-btn:hover {
+      background: rgba(255, 0, 128, 0.3);
     }
   </style>
 </head>
 <body>
   <div class="help-box">
-    <h1 id="title">📢 সহায়তা নির্দেশিকা</h1>
-    <p id="text">ভিডিও মধ্যে ক্লিক করার পরে অন্য কোন জায়গায় নিয়ে গেলে ব্যাকে চলে আসবেন।</p>
+    <h2 id="title" class="text-pink-500 text-xl font-semibold mb-3">ℹ️ সহায়তা বার্তা</h2>
+    <p id="message" class="text-gray-200 leading-relaxed text-lg">
+      ভিডিও মধ্যে ক্লিক করার পরে অন্য কোন জায়গায় নিয়ে গেলে ব্যাকে চলে আসবেন।
+    </p>
   </div>
 
+  <button id="langToggle" class="lang-btn">EN</button>
+
   <script>
-    // detect user language
-    const lang = navigator.language || navigator.userLanguage;
-    const isBangla = lang.startsWith("bn");
+    const messages = {
+      bn: {
+        title: "ℹ️ সহায়তা বার্তা",
+        message: "ভিডিও মধ্যে ক্লিক করার পরে অন্য কোন জায়গায় নিয়ে গেলে ব্যাকে চলে আসবেন।",
+        btn: "EN"
+      },
+      en: {
+        title: "ℹ️ Help Message",
+        message: "If clicking inside the video takes you somewhere else, just come back here.",
+        btn: "BN"
+      }
+    };
 
-    const title = document.getElementById("title");
-    const text = document.getElementById("text");
-
-    if (!isBangla) {
-      document.body.style.fontFamily = "'Roboto', sans-serif";
-      title.innerText = "📢 Help Guide";
-      text.innerText = "If clicking inside the video takes you to another page, simply come back here.";
-    } else {
-      document.body.style.fontFamily = "'Noto Sans Bengali', sans-serif";
+    function detectLanguage() {
+      const userLang = navigator.language || navigator.userLanguage;
+      return userLang.startsWith("bn") ? "bn" : "en";
     }
+
+    let currentLang = detectLanguage();
+
+    const titleEl = document.getElementById("title");
+    const msgEl = document.getElementById("message");
+    const btnEl = document.getElementById("langToggle");
+
+    function setLanguage(lang) {
+      const data = messages[lang];
+      titleEl.innerText = data.title;
+      msgEl.innerText = data.message;
+      btnEl.innerText = data.btn;
+      currentLang = lang;
+    }
+
+    btnEl.addEventListener("click", () => {
+      const newLang = currentLang === "bn" ? "en" : "bn";
+      setLanguage(newLang);
+    });
+
+    // প্রথমবার অটো ডিটেক্ট করে সেট করা
+    setLanguage(currentLang);
   </script>
 </body>
 </html>
