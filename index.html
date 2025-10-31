@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Help Box with Language Toggle</title>
+<title>Help Box with Language Toggle & Smooth Fade</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   body {
@@ -80,11 +80,16 @@
 
   #message {
     display: inline-block;
-    border-right: 2px solid rgba(255,255,255,0.7);
     white-space: pre-line;
     overflow: hidden;
     font-size: 18px;
     line-height: 1.8;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+  }
+
+  .fade {
+    opacity: 0;
   }
 </style>
 </head>
@@ -121,14 +126,18 @@ const titleEl = document.getElementById("title");
 const msgEl = document.getElementById("message");
 const btnEl = document.getElementById("langToggle");
 
-function typeText(text) {
-  msgEl.textContent = "";
-  let index = 0;
-  const interval = setInterval(() => {
-    msgEl.textContent = text.slice(0, index);
-    index++;
-    if(index > text.length) clearInterval(interval);
-  }, 40);
+function typeTextWithFade(text) {
+  msgEl.classList.add("fade");
+  setTimeout(() => {
+    msgEl.textContent = "";
+    msgEl.classList.remove("fade");
+    let index = 0;
+    const interval = setInterval(() => {
+      msgEl.textContent = text.slice(0, index);
+      index++;
+      if(index > text.length) clearInterval(interval);
+    }, 40);
+  }, 400);
 }
 
 function setLanguage(lang){
@@ -136,7 +145,7 @@ function setLanguage(lang){
   titleEl.innerText = data.title;
   btnEl.innerHTML = `<span>🌐</span> ${data.btn}`;
   currentLang = lang;
-  typeText(data.message);
+  typeTextWithFade(data.message);
 }
 
 btnEl.addEventListener("click", () => {
